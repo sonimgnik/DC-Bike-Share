@@ -1,4 +1,3 @@
-
 ##Instructions:
 #Download dataset to a new folder on your local drive.  This script will pick up all .csv in that folder.
 #You will need to install any packages not already on your local machine.
@@ -15,7 +14,7 @@ list.files()
 
 # Section Commented: This code merges the data and only needs to be run
 # when there is new data
-# library(data.table)  
+library(data.table)  
 # 
 # #merge all csv files in your local directory folder
 # files <- list.files(path = wd,pattern = ".csv")
@@ -50,3 +49,10 @@ df <- within(df,rm(Start.date, End.date))
 df<-df[c(1,7,9,10,11,12,2,4,3,6,5,8)]
 
 write.csv(df, file = "2018_data_Tidy.csv")
+
+#install.packages('swfscMisc')
+library(swfscMisc)
+na.count(df) #discover any NA values
+
+#view data frame attirubtes and structure
+str(df)
