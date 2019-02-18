@@ -1,0 +1,31 @@
+#name direectory as a value
+wd <- "your_directory"
+
+#set working diectory and view contents
+setwd(wd)
+getwd()
+list.files()
+
+#merge all csv files in your local directory folder
+files <- list.files(path = wd,pattern = ".csv")
+temp <- lapply(files, fread, sep=",")
+data <- rbindlist( temp )
+
+#view data 
+head(data, 3)
+#write to file
+write.csv(data, file = "2018_data.csv")
+
+#clean up Environments
+rm(data)
+rm(temp)
+
+#read data back in through csv
+data = read.csv("2018_data.csv", header = TRUE, stringsAsFactors = FALSE)
+
+tm2 <- as.POSIXct(data.df$Start.date, format = "%y%m%d %H:%M:%S")
+
+#is.na(data.df) #discover any NA values
+
+#view data frame attirubtes and structure
+str(data.df)
