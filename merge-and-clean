@@ -1,0 +1,52 @@
+
+##Instructions:
+#Download dataset to a new folder on your local drive.  This script will pick up all .csv in that folder.
+#You will need to install any packages not already on your local machine.
+
+#Note: If you run into memory issue and are using Windows, refer to this: https://stackoverflow.com/questions/11579765/how-to-clean-up-r-memory-without-the-need-to-restart-my-pc
+
+#name direectory as a value
+wd <- "/Users/nick/Documents/Syracuse MSBA/2019-0109 IST 687 Applied Data Science/Final Project/2018 Bike Share Data/"
+
+#set working diectory and view contents
+setwd(wd)
+getwd()
+list.files()
+
+# Section Commented: This code merges the data and only needs to be run
+# when there is new data
+# library(data.table)  
+# 
+# #merge all csv files in your local directory folder
+# files <- list.files(path = wd,pattern = ".csv")
+# temp <- lapply(files, fread, sep=",")
+# data <- rbindlist( temp )
+# 
+# #view data 
+# head(data, 3)
+# #write to file
+# write.csv(data, file = "2018_data.csv")
+# 
+# #clean up Environments
+# rm(data)
+# rm(temp)
+
+#Load data back into R from merged files
+library(stringr)
+
+df <- read.csv("2018_data.csv")
+
+startd<-str_split_fixed(df$Start.date, " ", 2)
+df$StartDate <- startd[,1]
+df$StartTime <- startd[,2]
+endd <-str_split_fixed(df$End.date," ", 2)
+df$EndDate <- endd[,1]
+df$EndTime <- endd[,2]
+
+## Remove Start.date and End.date since we have these represented separately
+df <- within(df,rm(Start.date, End.date))
+
+## Re-arrange columns
+df<-df[c(1,7,9,10,11,12,2,4,3,6,5,8)]
+
+write.csv(df, file = "2018_data_Tidy.csv")
